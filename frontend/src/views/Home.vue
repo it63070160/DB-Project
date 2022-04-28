@@ -2,23 +2,23 @@
   <div class="container is-widescreen">
     <section class="hero">
       <div class="hero-body">
-        <p class="title">My Card</p>
-        <div class="columns">
+        <p class="title">My Account</p>
+        <!-- <div class="columns">
           <div class="column is-half">
             <input class="input" type="text" v-model="search" placeholder="Search card(s)" />
           </div>
           <div class="column is-half">
             <button @click="getBlogs" class="button">Search</button>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
     <section class="section" id="app">
       <div class="content">
         <div class="columns is-multiline">
-          <div class="column is-3" v-for="blog in blogs" :key="blog.id">
+          <div class="column is-3" v-for="blog in blogs" :key="blog.account_number">
             <div class="card">
-              <div class="card-image pt-5">
+              <!-- <div class="card-image pt-5">
                 <figure class="image">
                   <img
                     style="height: 120px"
@@ -26,22 +26,25 @@
                     alt="Placeholder image"
                   />
                 </figure>
-              </div>
+              </div> -->
               <div class="card-content">
                 <div class="title">{{ blog.title }}</div>
-                <div class="content" style="height: 200px;">{{ shortContent(blog.content) }}</div>
+                <div class="content">Account Number : {{ blog.account_number }}</div>
+                <div class="content">Balance : {{ blog.balance }}</div>
+                <div class="content" v-if="blog.type == 'DEPOSIT_ACCOUNT'">Account Type : Deposit Account</div>
+                <div class="content" v-if="blog.type == 'CREDIT_ACCOUNT'">Account Type : Credit Account</div>
               </div>
               <footer class="card-footer">
-                <router-link class="card-footer-item" :to="`/blogs/detail/${blog.id}`">Read more...</router-link>
-                <a class="card-footer-item" @click="addLike(blog.id)">
-                  <span class="icon-text">
+                <router-link class="card-footer-item" :to="`/blogs/detail/${blog.account_number}`">View card...</router-link>
+                <!-- <a class="card-footer-item" @click="addLike(blog.id)"> -->
+                  <!-- <span class="icon-text">
                     <span class="icon">
                       <i class="far fa-heart"></i>
                     </span>
                     <span>Like ({{blog.like}})</span>
-                  </span>
-                </a>
-                <a
+                  </span> -->
+                <!-- </a> -->
+                <!-- <a
                   v-if="isBlogOwner(blog)"
                   class="card-footer-item"
                   @click="$router.push({name:'update-blog',params:{id:blog.id}})"
@@ -49,7 +52,7 @@
                   <span class="icon-text">
                     <span>Edit</span>
                   </span>
-                </a>
+                </a> -->
               </footer>
             </div>
           </div>
