@@ -7,13 +7,20 @@
     </section>
     <section class="hero">
       <div class="hero-body">
-        <p class="title">{{ blog.title }}</p>
+        <p class="title">Account Number : {{ $route.params.id }}</p>
       </div>
     </section>
     <section class="section">
       <div class="content">
         <div class="card has-background-light">
-          <div class="card-image pt-5">
+          <div class="card" v-for='card in creditCardList' :key="card.card_number">
+          <div class="card-content">
+            <div class="content">Card Number : {{ card.card_number }}</div>
+            <div class="content">Issue Date : {{ card.issue_date }}</div>
+            <div class="content">Exp Date : {{ card.exp_date }}</div>
+            <div class="content">Status : {{ card.status }}</div>
+          </div>
+          <!-- <div class="card-image pt-5">
             <div class="columns">
               <div v-for="image in images" :key="image.id" class="column">
                 <figure class="image">
@@ -125,13 +132,14 @@
                 </div>
               </article>
             </div>
-          </div>
+          </div> -->
           <footer class="card-footer">
             <router-link class="card-footer-item" to="/">To Home Page</router-link>
-            <a class="card-footer-item" @click="deleteBlog" v-if="isBlogOwner(blog)">
+            <!-- <a class="card-footer-item" @click="deleteBlog" v-if="isBlogOwner(blog)">
               <span>Delete this blog</span>
-            </a>
+            </a> -->
           </footer>
+          </div>
         </div>
       </div>
     </section>
@@ -145,9 +153,10 @@ export default {
   props: ['user'],
   data() {
     return {
-      blog: {},
-      comments: [],
-      images: [],
+      creditCardList: {},
+      debitCardList: {},
+      // comments: [],
+      // images: [],
       error: null,
       commTxt: "",
       editToggle: -1,
@@ -162,90 +171,91 @@ export default {
       axios
         .get(`http://localhost:3000/blogs/${blogId}`)
         .then((response) => {
-          this.blog = response.data.blog;
-          this.images = response.data.images;
-          this.comments = response.data.comments;
+          this.creditCardList = response.data.creditCard;
+          this.debitCardList = response.data.debitCard;
+          // this.images = response.data.images;
+          // this.comments = response.data.comments;
         })
         .catch((error) => {
           this.error = error.response.data.message;
         });
     },
-    addComment() {
-      axios
-        .post(`http://localhost:3000/${this.blog.id}/comments`, {
-          comment: this.commTxt,
-        })
-        .then((response) => {
-          this.commTxt = "";
-          this.comments.push(response.data);
-        })
-        .catch((error) => {
-          this.error = error.response.data.message;
-        });
-    },
-    saveEditComment(commentId, index) {
-      axios
-        .put(`http://localhost:3000/comments/${commentId}`, {
-          comment: this.editCommentMessage,
-        })
-        .then((response) => {
-          this.comments[index].comment = response.data.comment;
-          this.editToggle = -1;
-        })
-        .catch((error) => {
-          this.error = error.message;
-        });
-    },
-    deleteComment(commentId, index) {
-      const result = confirm(`Are you sure you want to delete this comment`);
-      if (result) {
-        axios
-          .delete(`http://localhost:3000/comments/${commentId}`)
-          .then((response) => {
-            console.log(response);
-            this.comments.splice(index, 1);
-          })
-          .catch((error) => {
-            this.error = error.message;
-          });
-      }
-    },
-    addLikeComment(commentId) {
-      axios
-        .put(`http://localhost:3000/comments/addlike/${commentId}`)
-        .then((response) => {
-          let selectedComment = this.comments.filter(
-            (e) => e.id === commentId
-          )[0];
-          console.log(selectedComment);
-          selectedComment.like = response.data.like;
-          console.log(selectedComment);
-        })
-        .catch((error) => (this.error = error.message));
-    },
-    deleteBlog() {
-      const result = confirm(
-        `Are you sure you want to delete \'${this.blog.title}\'`
-      );
-      if (result) {
-        axios
-          .delete(`http://localhost:3000/blogs/${this.blog.id}`)
-          .then((response) => {
-            this.$router.push("/");
-          })
-          .catch((error) => {
-            alert(error.response.data.message);
-          });
-      }
-    },
-    isCommentOwner(comment) {
-      if (!this.user) return false
-      return comment.comment_by_id === this.user.id || this.user.role === 'admin'
-    },
-    isBlogOwner(blog) {
-      if (!this.user) return false
-      return blog.create_by_id === this.user.id || this.user.role === 'admin'
-    },
+    // addComment() {
+    //   axios
+    //     .post(`http://localhost:3000/${this.blog.id}/comments`, {
+    //       comment: this.commTxt,
+    //     })
+    //     .then((response) => {
+    //       this.commTxt = "";
+    //       this.comments.push(response.data);
+    //     })
+    //     .catch((error) => {
+    //       this.error = error.response.data.message;
+    //     });
+    // },
+    // saveEditComment(commentId, index) {
+    //   axios
+    //     .put(`http://localhost:3000/comments/${commentId}`, {
+    //       comment: this.editCommentMessage,
+    //     })
+    //     .then((response) => {
+    //       this.comments[index].comment = response.data.comment;
+    //       this.editToggle = -1;
+    //     })
+    //     .catch((error) => {
+    //       this.error = error.message;
+    //     });
+    // },
+    // deleteComment(commentId, index) {
+    //   const result = confirm(`Are you sure you want to delete this comment`);
+    //   if (result) {
+    //     axios
+    //       .delete(`http://localhost:3000/comments/${commentId}`)
+    //       .then((response) => {
+    //         console.log(response);
+    //         this.comments.splice(index, 1);
+    //       })
+    //       .catch((error) => {
+    //         this.error = error.message;
+    //       });
+    //   }
+    // },
+    // addLikeComment(commentId) {
+    //   axios
+    //     .put(`http://localhost:3000/comments/addlike/${commentId}`)
+    //     .then((response) => {
+    //       let selectedComment = this.comments.filter(
+    //         (e) => e.id === commentId
+    //       )[0];
+    //       console.log(selectedComment);
+    //       selectedComment.like = response.data.like;
+    //       console.log(selectedComment);
+    //     })
+    //     .catch((error) => (this.error = error.message));
+    // },
+    // deleteBlog() {
+    //   const result = confirm(
+    //     `Are you sure you want to delete \'${this.blog.title}\'`
+    //   );
+    //   if (result) {
+    //     axios
+    //       .delete(`http://localhost:3000/blogs/${this.blog.id}`)
+    //       .then((response) => {
+    //         this.$router.push("/");
+    //       })
+    //       .catch((error) => {
+    //         alert(error.response.data.message);
+    //       });
+    //   }
+    // },
+    // isCommentOwner(comment) {
+    //   if (!this.user) return false
+    //   return comment.comment_by_id === this.user.id || this.user.role === 'admin'
+    // },
+    // isBlogOwner(blog) {
+    //   if (!this.user) return false
+    //   return blog.create_by_id === this.user.id || this.user.role === 'admin'
+    // },
   },
 };
 </script>
