@@ -112,27 +112,23 @@ router.post("/blogs", isLoggedIn, upload.array("myImage", 5), async function (re
 
 router.get("/blogs/:id", function (req, res, next) {
   // Query data from 3 tables
-  const promise1 = pool.query("SELECT * FROM blogs WHERE id=?", [
+  const promise1 = pool.query("SELECT * FROM credit_card WHERE account_number=?", [
     req.params.id,
   ]);
-  const promise2 = pool.query("SELECT * FROM comments WHERE blog_id=?", [
+  const promise2 = pool.query("SELECT * FROM debit_card WHERE account_number=?", [
     req.params.id,
   ]);
-  const promise3 = pool.query("SELECT * FROM images WHERE blog_id=?", [
-    req.params.id,
-  ]);
-
+  
   // Use Promise.all() to make sure that all queries are successful
-  Promise.all([promise1, promise2, promise3])
+  Promise.all([promise1, promise2])
     .then((results) => {
-      const [blogs, blogFields] = results[0];
-      const [comments, commentFields] = results[1];
-      const [images, imageFields] = results[2];
+      const [creditCard, blogFields] = results[0];
+      const [debitCard, commentFields] = results[1];
+      console.log(creditCard)
+      console.log(debitCard)
       res.json({
-        blog: blogs[0],
-        images: images,
-        comments: comments,
-        error: null,
+        creditCard: creditCard,
+        debitCard: debitCard,
       });
     })
     .catch((err) => {
