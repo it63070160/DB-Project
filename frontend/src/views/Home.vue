@@ -29,13 +29,13 @@
               </div> -->
               <div class="card-content">
                 <div class="title">{{ blog.title }}</div>
-                <div class="content">Account Number : {{ blog.account_number }}</div>
-                <div class="content">Balance : {{ blog.balance }}</div>
-                <div class="content" v-if="blog.type == 'DEPOSIT_ACCOUNT'">Account Type : Deposit Account</div>
-                <div class="content" v-if="blog.type == 'CREDIT_ACCOUNT'">Account Type : Credit Account</div>
+                <div class="content"><i class="fas fa-money-check" aria-hidden="true"></i> Account Number : {{ blog.account_number }}</div>
+                <div class="content"><i class="fas fa-dollar-sign" aria-hidden="true"></i> Balance : {{ blog.balance }}</div>
+                <div class="content" v-if="blog.type == 'DEPOSIT_ACCOUNT'"><i class="fas fa-address-book" aria-hidden="true"></i> Account Type : Deposit Account</div>
+                <div class="content" v-if="blog.type == 'CREDIT_ACCOUNT'"><i class="fas fa-address-book" aria-hidden="true"></i> Account Type : Credit Account</div>
               </div>
               <footer class="card-footer">
-                <router-link class="card-footer-item" :to="`/blogs/detail/${blog.account_number}`">View card...</router-link>
+                <router-link class="card-footer-item" :to="`/blogs/detail/${blog.account_number}`">View Card ...</router-link>
                 <!-- <a class="card-footer-item" @click="addLike(blog.id)"> -->
                   <!-- <span class="icon-text">
                     <span class="icon">
@@ -118,7 +118,7 @@ export default {
     },
     isBlogOwner(blog) {
       if (!this.user) return false
-      return blog.create_by_id === this.user.id || this.user.role === 'admin'
+      return blog.create_by_id === this.user.id || this.user.role === 'employee'
     }
   },
 };
