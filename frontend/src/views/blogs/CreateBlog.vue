@@ -11,11 +11,11 @@
     </section>
     <section class="hero">
       <div class="hero-body">
-        <p class="title">Create new Blog</p>
+        <p class="title">Create a card</p>
       </div>
     </section>
     <section class="px-6">
-      <input
+      <!-- <input
         class="mb-5"
         multiple
         type="file"
@@ -36,48 +36,178 @@
             </footer>
           </div>
         </div>
-      </div>
-
-      <div class="field mt-5">
-        <label class="label">Title</label>
-        <div class="control">
-          <input v-model="titleBlog" class="input" type="text" placeholder="Text input" />
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label">Content</label>
-        <div class="control">
-          <textarea v-model="contentBlog" class="textarea" placeholder="Textarea"></textarea>
-        </div>
-      </div>
-
+      </div> -->
       <div class="control mb-3">
+        <label class="label">Type</label>
         <label class="radio">
-          <input v-model="statusBlog" type="radio" name="answer" value="01" />
-          Private
+          <input v-model="cardType" type="radio" name="answer" value="01" />
+          Credit
         </label>
         <label class="radio">
-          <input v-model="statusBlog" type="radio" name="answer" value="02" />
-          Public
+          <input v-model="cardType" type="radio" name="answer" value="02" />
+          Deposit
         </label>
       </div>
 
       <div class="field">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">Account Number</label>
+            <div class="control">
+              <input v-model="accountnumber" class="input" type="text" placeholder="Owner's Account Number"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="field" v-if="cardType=='01'">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">Interest</label>
+            <div class="control">
+              <input v-model="interest" class="input" type="number" step="0.01" placeholder="Interest for this card"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="field">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">First Name</label>
+            <div class="control">
+              <input v-model="first_name" class="input" type="text" placeholder="Owner's Firstname"/>
+            </div>
+          </div>
+          <div class="column">
+            <label class="label">Last Name</label>
+            <div class="control">
+              <input v-model="last_name" class="input" type="text" placeholder="Owner's Lastname"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">Sex</label>
+            <div class="control">
+              <div class="dropdown" :class="{'is-active':isActive}">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3" @click="isActive?isActive=false:isActive=true">
+                    <span>{{sex}}</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item" @click="sex='Male';isActive=false">
+                      Male
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item"  @click="sex='Female';isActive=false">
+                      Female
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item"  @click="sex='Other';isActive=false">
+                      Other
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <label class="label">Status</label>
+            <div class="control">
+              <div class="dropdown" :class="{'is-active':isActive2}">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3" @click="isActive2?isActive2=false:isActive2=true">
+                    <span>{{status}}</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item" @click="status='Single';isActive2=false">
+                      Single
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item"  @click="status='Married';isActive2=false">
+                      Married
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item"  @click="status='Divorce';isActive2=false">
+                      Divorce
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item"  @click="status='Other';isActive2=false">
+                      Other
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="field">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">Age</label>
+            <div class="control">
+              <input v-model="age" class="input" type="number"/>
+            </div>
+          </div>
+          <div class="column">
+            <label class="label">Salary</label>
+            <div class="control">
+              <input v-model="salary" class="input" type="number" step="0.01"/>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="field">
         <div class="control">
           <label class="checkbox">
             <input v-model="pinnedBlog" type="checkbox" />
             Pinned
           </label>
         </div>
-      </div>
+      </div> -->
 
       <div class="field is-grouped">
         <div class="control">
-          <button @click="submitBlog" class="button is-link">Submit</button>
+          <button @click="showModal" class="button is-link">Submit</button>
         </div>
         <div class="control">
           <button @click="$router.go(-1)" class="button is-link is-light">Cancel</button>
+        </div>
+      </div>
+
+      <div class="modal" :class="{'is-active':modalActive,'':modalActive==false}">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">ข้อกำหนดการร้องขอทำบัตร</p>
+            <button class="delete" aria-label="close" @click="modalActive?modalActive=false:modalActive"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+            - ต้องมีอายุมากกว่าหรือเท่ากับ 18 ปีบริบูรณ์<br>
+            - ต้องมีเงินเดือนมากกว่า 20,000 บาท/เดือน
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success" @click="submitBlog">ยอมรับ</button>
+            <button class="button" @click="modalActive?modalActive=false:modalActive">ยกเลิก</button>
+          </footer>
         </div>
       </div>
     </section>
@@ -88,15 +218,27 @@
 import axios from '@/plugins/axios'
 
 export default {
+  props: ['user'],
   data() {
     return {
       blog: {},
       error: null,
       images: [], // array of image
-      titleBlog: "",
+      accountnumber: '',
+      first_name: '',
+      last_name: '',
       contentBlog: "",
-      pinnedBlog: false,
-      statusBlog: "01",
+      // pinnedBlog: false,
+      cardType: "01",
+      interest: 0,
+      isActive: false,
+      isActive2: false,
+      modalActive: false,
+      acceptModal: false,
+      sex: "Male",
+      age: 0,
+      status: "Single",
+      salary: 0,
     };
   },
   methods: {
@@ -112,29 +254,20 @@ export default {
       this.images = Array.from(this.images);
       this.images.splice(index, 1);
     },
+    showModal(){
+      this.modalActive = true
+    },
     submitBlog() {
       let formData = new FormData();
-      formData.append("title", this.titleBlog);
-      formData.append("content", this.contentBlog);
-      formData.append("pinned", this.pinnedBlog ? 1 : 0);
-      formData.append("status", "01");
-      this.images.forEach((image) => {
-        formData.append("myImage", image);
-      });
-
-      // Note ***************
-      // ตอนเรายิง Postmant จะใช้ fromData
-      // ตอนยิงหลาย ๆ รูปพร้อมกันใน Postman จะเป็นแบบนี้
-
-      // title   | "This is a title of blog"
-      // comment | "comment in blog"
-      // ...
-      // myImage | [select file 1]
-      // myImage | [select file 2]
-      // myImage | [select file 3]
-
-      // จะสังเกตุว่าใช้ myImage เป็น key เดียวกัน เลยต้องเอามา loop forEach
-      // พอไปฝั่ง backend มันจะจัด file ให้เป็น Array เพื่อเอาไปใช้งานต่อได้
+      formData.append("accountnumber", this.accountnumber);
+      formData.append("interest", this.interest);
+      // formData.append("firstname", this.first_name);
+      // formData.append("lastname", this.last_name);
+      // formData.append("sex", this.sex);
+      // formData.append("status", this.status);
+      // formData.append("age", this.age);
+      // formData.append("salary", this.salary);
+      formData.append("cardType", this.cardType=="01"?"CREDIT_ACCOUNT":"DEPOSIT_ACCOUNT");
 
       axios
         .post("http://localhost:3000/blogs", formData)
