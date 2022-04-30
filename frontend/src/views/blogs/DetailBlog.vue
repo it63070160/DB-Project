@@ -11,173 +11,24 @@
       </div>
     </section>
     <section class="section">
-      <div class="content">
-        <div class="card has-background-light">
-          <div class="card" v-for='card in creditCardList' :key="card.card_number">
-          <div class="card-content" v-if="editToggle!=1">
-            <div class="content"><i class="fas fa-credit-card"/> หมายเลขบัตร : {{ card.card_number }}</div>
-            <div class="content"><i class="fas fa-dollar-sign"/> วงเงิน : {{ card.limit }}</div>
-            <div class="content"><i class="fas fa-dollar-sign" style="color: red"/> ยอดค้างชำระ : {{ card.outstanding_balance }}</div>
-            <div class="content"><i class="fas fa-percent"/> ดอกเบี้ย : {{ card.interest }} %</div>
-            <div class="content"><i class="fas fa-calendar"/> วันออกบัตร : {{ card.issue_date.substring(0, 10) }}</div>
-            <div class="content"><i class="fas fa-calendar-minus"/> วันหมดอายุ : {{ card.exp_date.substring(0, 10) }}</div>
-            <div class="content"><i class="fas fa-signal"/> สถานะ : <p :class="{'has-text-success': card.status == 'Active', 'has-text-warning': card.status == 'Reject', 'has-text-danger': card.status == 'Closed'}" style="display: inline-block">{{ card.status }}</p></div>
-          </div>
-          <div class="card-content" v-if="editToggle==1 && isEmployee()">
-            <div class="content">หมายเลขบัตร<input class="input" type="text" v-model="editCardNum" disabled/></div>
-            <div class="content">วงเงิน<input class="input" type="text" v-model="editCardLimit"/></div>
-            <div class="content">ยอดค้างชำระ<input class="input" type="text" v-model="editCardOSB"/></div>
-            <div class="content">ดอกเบี้ย<input class="input" type="text" v-model="editCardInterest"/></div>
-            <div class="content">วันออกบัตร<input class="input" type="date" v-model="editCardIssue"/></div>
-            <div class="content">วันหมดอายุ<input class="input" type="date" v-model="editCardExp"/></div>
-            <div class="content">
-              Status
-              <select class="input" v-model="editCardStatus">
-                <option>Active</option>
-                <option>Reject</option>
-                <option>Closed</option>
-              </select>
-            </div>
-          </div>
-          <!-- <div class="card-image pt-5">
-            <div class="columns">
-              <div v-for="image in images" :key="image.id" class="column">
-                <figure class="image">
-                  <img
-                    :src="'http://localhost:3000/'+image.file_path"
-                    alt="Placeholder image"
-                    style="height: 500px; object-fit: cover;"
-                  />
-                </figure>
-              </div>
-            </div>
-          </div>
-          <div class="card-content">
-            <div class="content">{{ blog.content }}</div>
-            <div class="container pb-3">
-              <p class="subtitle">Comments</p>
-              <div class="columns">
-                <div class="column is-8">
-                  <input type="text" class="input" v-model="commTxt" placeholder="Add new comment" />
-                </div>
-                <div class="column is-4">
-                  <button @click="addComment" class="button">Add comment</button>
-                </div>
-              </div>
-            </div>
-            <div v-for="(comment,index) in comments" :key="comment.id" class="box">
-              <article class="media">
-                <div class="media-left">
-                  <figure class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image" />
-                  </figure>
-                </div>
-                <div v-if="index===editToggle" class="media-content">
-                  <div class="content">
-                    <input v-model="editCommentMessage" class="input" type="text" />
-                    <p class="is-size-7">{{ comment.comment_date }}</p>
-                  </div>
-                  <nav class="level">
-                    <div class="level-left">
-                      <a class="level-item" aria-label="like">
-                        <span class="icon is-small pr-3">
-                          <i class="fas fa-heart" aria-hidden="true"></i>
-                        </span>
-                        Like (0)
-                      </a>
-                    </div>
-                    <div class="level-right">
-                      <div class="level-item">
-                        <button
-                          @click="saveEditComment(comment.id,index)"
-                          class="button is-primary"
-                        >
-                          <span>Save Comment</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-edit"></i>
-                          </span>
-                        </button>
-                      </div>
-                      <div class="level-item">
-                        <button @click="editToggle = -1" class="button is-info is-outlined">
-                          <span>Cancel</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-times"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </nav>
-                </div>
-                <div v-else class="media-content">
-                  <div class="content">
-                    <p>{{ comment.comment }}</p>
-                    <p class="is-size-7">{{ comment.comment_date }}</p>
-                  </div>
-                  <nav class="level">
-                    <div class="level-left">
-                      <a @click="addLikeComment(comment.id)" class="level-item" aria-label="like">
-                        <span class="icon is-small pr-3">
-                          <i class="fas fa-heart" aria-hidden="true"></i>
-                        </span>
-                        Like ({{comment.like}})
-                      </a>
-                    </div>
-                    <div class="level-right" v-if="isCommentOwner(comment)">
-                      <div class="level-item">
-                        <button
-                          @click="editToggle = index; editCommentMessage = comment.comment"
-                          class="button is-warning"
-                        >
-                          <span>Edit</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-edit"></i>
-                          </span>
-                        </button>
-                      </div>
-                      <div class="level-item">
-                        <button
-                          @click="deleteComment(comment.id, index)"
-                          class="button is-danger is-outlined"
-                        >
-                          <span>Delete</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-times"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </nav>
-                </div>
-              </article>
-            </div>
-          </div>-->
-          <footer class="card-footer" v-if="editToggle!=1">
-            <router-link class="card-footer-item" to="/">To Home Page</router-link>
-            <a class="card-footer-item" @click="manageCard(card, 'CREDIT')" v-if="isEmployee()">
-              <span>Manage this card</span>
-            </a>
-          </footer>
-          <footer class="card-footer" v-if="editToggle==1 && isEmployee()">
-            <a class="card-footer-item" @click="saveEditCard">Save</a>
-            <a class="card-footer-item" @click="editToggle=-1">
-              <span>Cancel</span>
-            </a>
-          </footer>
-        </div>
-        <div class="card has-background-light">
-          <div class="card" v-for='card in debitCardList' :key="card.card_number">
-            <div class="card-content" v-if="editToggle==-1">
+      <div class="columns is-multiline">
+        <div class="column is-6" v-for='card in creditCardList' :key="card.card_number">
+          <div class="card has-background-light">
+            <div class="card-content" v-if="editToggle!=1">
               <div class="content"><i class="fas fa-credit-card"/> หมายเลขบัตร : {{ card.card_number }}</div>
-            <div class="content"><i class="fas fa-dollar-sign"/> วงเงินรายวัน : {{ card.limit_per_day }}</div>
-            <div class="content"><i class="fas fa-calendar"/> วันออกบัตร : {{ card.issue_date.substring(0, 10) }}</div>
-            <div class="content"><i class="fas fa-calendar-minus"/> วันหมดอายุ : {{ card.exp_date.substring(0, 10) }}</div>
-            <div class="content"><i class="fas fa-signal"/> สถานะ : <p :class="{'has-text-success': card.status == 'Active', 'has-text-warning': card.status == 'Reject', 'has-text-danger': card.status == 'Closed'}" style="display: inline-block">{{ card.status }}</p></div>
+              <div class="content"><i class="fas fa-dollar-sign"/> วงเงิน : {{ card.limit }}</div>
+              <div class="content"><i class="fas fa-dollar-sign" style="color: red"/> ยอดค้างชำระ : {{ card.outstanding_balance }}</div>
+              <div class="content"><i class="fas fa-percent"/> ดอกเบี้ย : {{ card.interest }} %</div>
+              <div class="content"><i class="fas fa-calendar"/> วันออกบัตร : {{ card.issue_date.substring(0, 10) }}</div>
+              <div class="content"><i class="fas fa-calendar-minus"/> วันหมดอายุ : {{ card.exp_date.substring(0, 10) }}</div>
+              <div class="content"><i class="fas fa-signal"/> สถานะ : <p :class="{'has-text-success': card.status == 'Active', 'has-text-warning': card.status == 'Reject', 'has-text-danger': card.status == 'Closed'}" style="display: inline-block">{{ card.status }}</p></div>
             </div>
             <div class="card-content" v-if="editToggle==1 && isEmployee()">
               <div class="content">หมายเลขบัตร<input class="input" type="text" v-model="editCardNum" disabled/></div>
-              <div class="content">วงเงินรายวัน<input class="input" type="text" v-model="editCardLimit"/></div>
-              <div class="content">วันออกบัตร<input class="input" type="date" v-model="editCardIssue"/></div>
+              <div class="content">วงเงิน<input class="input" type="text" v-model="editCardLimit"/></div>
+              <div class="content">ยอดค้างชำระ<input class="input" type="text" v-model="editCardOSB"/></div>
+              <div class="content">ดอกเบี้ย<input class="input" type="text" v-model="editCardInterest"/></div>
+              <div class="content">วันออกบัตร<input class="input" type="date" v-model="editCardIssue" disabled/></div>
               <div class="content">วันหมดอายุ<input class="input" type="date" v-model="editCardExp"/></div>
               <div class="content">
                 Status
@@ -189,7 +40,43 @@
               </div>
             </div>
             <footer class="card-footer" v-if="editToggle!=1">
-              <router-link class="card-footer-item" to="/">To Home Page</router-link>
+              <a class="card-footer-item" @click="manageCard(card, 'CREDIT')" v-if="isEmployee()">
+                <span>Manage this card</span>
+              </a>
+            </footer>
+            <footer class="card-footer" v-if="editToggle==1 && isEmployee()">
+              <a class="card-footer-item" @click="saveEditCard">Save</a>
+              <a class="card-footer-item" @click="editToggle=-1">
+                <span>Cancel</span>
+              </a>
+            </footer>
+          </div>
+          <br>
+        </div>
+        <div class="column is-6" v-for='card in debitCardList' :key="card.card_number">
+          <div class="card has-background-light">
+            <div class="card-content" v-if="editToggle==-1">
+              <div class="content"><i class="fas fa-credit-card"/> หมายเลขบัตร : {{ card.card_number }}</div>
+              <div class="content"><i class="fas fa-dollar-sign"/> วงเงินรายวัน : {{ card.limit_per_day }}</div>
+              <div class="content"><i class="fas fa-calendar"/> วันออกบัตร : {{ card.issue_date.substring(0, 10) }}</div>
+              <div class="content"><i class="fas fa-calendar-minus"/> วันหมดอายุ : {{ card.exp_date.substring(0, 10) }}</div>
+              <div class="content"><i class="fas fa-signal"/> สถานะ : <p :class="{'has-text-success': card.status == 'Active', 'has-text-warning': card.status == 'Reject', 'has-text-danger': card.status == 'Closed'}" style="display: inline-block">{{ card.status }}</p></div>
+            </div>
+            <div class="card-content" v-if="editToggle==1 && isEmployee()">
+              <div class="content">หมายเลขบัตร<input class="input" type="text" v-model="editCardNum" disabled/></div>
+              <div class="content">วงเงินรายวัน<input class="input" type="text" v-model="editCardLimit"/></div>
+              <div class="content">วันออกบัตร<input class="input" type="date" v-model="editCardIssue" disabled/></div>
+              <div class="content">วันหมดอายุ<input class="input" type="date" v-model="editCardExp"/></div>
+              <div class="content">
+                Status
+                <select class="input" v-model="editCardStatus">
+                  <option>Active</option>
+                  <option>Reject</option>
+                  <option>Closed</option>
+                </select>
+              </div>
+            </div>
+            <footer class="card-footer" v-if="editToggle!=1">
               <a class="card-footer-item" @click="manageCard(card, 'DEBIT')" v-if="isEmployee()">
                 <span>Manage this card</span>
               </a>
@@ -201,10 +88,11 @@
               </a>
             </footer>
           </div>
-        </div>
+          <br>
         </div>
       </div>
     </section>
+    <router-link class="card-footer-item" to="/">To Home Page</router-link>
   </div>
 </template>
 
