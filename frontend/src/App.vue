@@ -4,9 +4,9 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <router-link to="/" class="navbar-item is-size-4">
-          Ploikong
+          <i class="fas fa-landmark" style="margin-right: 10px;" aria-hidden="true"></i>Ploikong
         </router-link>
-
+      
         <a
           role="button"
           class="navbar-burger"
@@ -23,8 +23,8 @@
       <div class="navbar-menu">
         <div class="navbar-end">
           <div v-if="user" class="navbar-item">
-            <router-link to="/blogs/create" class="button is-primary">
-              <strong>New Blog</strong>
+            <router-link to="/cards/request" class="button is-primary">
+              <strong>Create Card</strong>
             </router-link>
           </div>
           <div v-if="user" class="navbar-item has-dropdown is-hoverable">
