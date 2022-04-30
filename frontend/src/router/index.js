@@ -15,7 +15,7 @@ const routes = [
     component: () => import('../views/blogs/DetailBlog.vue')
   },
   {
-    path: '/blogs/create',
+    path: '/cards/request',
     name: 'create-blog',
     meta: { login: true },
     component: () => import('../views/blogs/CreateBlog.vue')
