@@ -169,6 +169,7 @@ export default {
           .post("http://localhost:3000/user/signup", data)
           .then((res) => {
             alert("Sign up Success");
+            this.$router.push({path: '/user/login'})
           })
           .catch((err) => {
             alert(err.response.data.details.message)
