@@ -19,17 +19,22 @@ async function isLoggedIn (req, res, next) {
     }
     
     // Check token
-    const [tokens] = await pool.query('SELECT * FROM tokens WHERE token = ?', [part2])
+    const [tokens] = await pool.query('SELECT * FROM token WHERE token = ?', [part2])
     const token = tokens[0]
     if (!token) {
         return res.status(401).send('You are not logged in')
     }
 
     // Set user
-    const [users] = await pool.query(
-        'SELECT user_id, fname, lname, role ' + 
+    let [users] = await pool.query(
+        'SELECT * ' + 
         'FROM user WHERE user_id = ?', [token.user_id]
     )
+    if (users[0].role == "employee"){
+        [users] = await pool.query(
+            'SELECT * FROM user JOIN employee USING (user_id) JOIN branch USING (branch_id) JOIN bank USING (bank_id) WHERE user_id = ?', [token.user_id]
+        )
+    }
     req.user = users[0]
 
     next()

@@ -18,7 +18,7 @@ const passwordValidator = (value, helpers) => {
 }
 
 const usernameValidator = async (value, helpers) => {
-    const [rows, _] = await pool.query("SELECT user_id FROM user WHERE user_id = ?", [value])
+    const [rows, _] = await pool.query("SELECT username FROM user WHERE username = ?", [value])
     if (rows.length > 0) {
         const message = 'This username is already taken'
         throw new Joi.ValidationError(message, { message })
@@ -51,12 +51,13 @@ router.post('/user/signup', async (req, res, next) => {
 
     try {
         await conn.query(
-            'INSERT INTO user(user_id, password, fname, lname) VALUES (?, ?, ?, ?)',
-            [username, password, first_name, last_name]
+            'INSERT INTO user(username, password, fname, lname, role) VALUES (?, ?, ?, ?, ?)',
+            [username, password, first_name, last_name, 'customer']
         )
         conn.commit()
         res.status(201).send()
     } catch (err) {
+        console.log(err)
         conn.rollback()
         res.status(400).json(err.toString());
     } finally {
@@ -84,7 +85,7 @@ router.post('/user/login', async (req, res, next) => {
     try {
         // Check if username is correct
         const [users] = await conn.query(
-            'SELECT * FROM user WHERE user_id=?', 
+            'SELECT * FROM user WHERE username=?', 
             [username]
         )
         const user = users[0]
@@ -99,7 +100,7 @@ router.post('/user/login', async (req, res, next) => {
 
         // Check if token already existed
         const [tokens] = await conn.query(
-            'SELECT * FROM tokens WHERE user_id=?', 
+            'SELECT * FROM token WHERE user_id=?', 
             [user.user_id]
         )
         let token = tokens[0]?.token
@@ -107,7 +108,7 @@ router.post('/user/login', async (req, res, next) => {
             // Generate and save token into database
             token = generateToken()
             await conn.query(
-                'INSERT INTO tokens(user_id, token) VALUES (?, ?)', 
+                'INSERT INTO token(user_id, token) VALUES (?, ?)', 
                 [user.user_id, token]
             )
         }

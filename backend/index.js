@@ -13,16 +13,20 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 
 // routers
 const indexRouter = require('./routes/index')
-const blogRouter = require('./routes/blog')
-const commentRouter = require('./routes/comment')
-const imageRouter = require('./routes/image')
+const cardRouter = require('./routes/card')
 const userRouter = require('./routes/user')
+const bankRouter = require('./routes/bank')
+const accountRouter = require('./routes/account')
+const transactionRouter = require('./routes/transaction')
+const storeRouter = require('./routes/store')
 
 app.use(indexRouter.router)
-app.use(blogRouter.router)
-app.use(commentRouter.router)
-app.use(imageRouter.router)
+app.use(cardRouter.router)
 app.use(userRouter.router)
+app.use(bankRouter.router)
+app.use(accountRouter.router)
+app.use(storeRouter.router)
+app.use(transactionRouter.router)
 
 app.listen(3000, () => {
   console.log(`Example app listening at http://localhost:3000`)
